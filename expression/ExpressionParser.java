@@ -1,6 +1,7 @@
+package expression;
 import java.util.Scanner;
 
-public class Parser {
+public class ExpressionParser {
 
 	public static String operatorTable[][] = {
 			{"(\\.)","LEFT","INFIX"},
@@ -131,7 +132,7 @@ public class Parser {
 	public static Expression parseValue(Scanner scan) throws Exception {
 		if (scan.hasNext("[(]")) {
 			scan.next("[(]");
-			Expression e = Parser.parse(scan);
+			Expression e = ExpressionParser.parse(scan);
 			scan.next("[)]");
 			return new ValueExpression<Expression>(e);
 		}
