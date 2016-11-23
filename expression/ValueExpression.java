@@ -20,7 +20,7 @@ public class ValueExpression extends Expression {
 	public ValueExpression(Scanner scan) throws Exception {
 		if (scan.hasNext("[(]")) {
 			scan.next("[(]");
-			value = ExpressionParser.parse(scan);
+			value = Expression.parse(scan);
 			scan.next("[)]");
 		} else if (scan.hasNext("[a-zA-Z$_][a-zA-Z1-9$_]*")) {
 			value = scan.next("[a-zA-Z$_][a-zA-Z1-9$_]*");
