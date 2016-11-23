@@ -9,8 +9,8 @@ public class Driver {
 	public static void main(String[] args) {
 			
 		try {
-			Expression f = Expression.parse(new Scanner(scan.nextLine()));
-			System.out.println(f);
+			Program p = new Program(scan);
+			System.out.println(p);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
