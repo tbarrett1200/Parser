@@ -44,7 +44,7 @@ public class ExpressionParser {
 	 */
 	private static Expression parseAtPrecedence(Scanner scan, int precedence) throws Exception {
 		//parses values once running out of operators
-		if (precedence == 0) return parseValue(scan);
+		if (precedence == 0) return new ValueExpression(scan);
 		
 		//a string representation of the operator fixity and associativity
 		String operatorType = fixityAtPrecendence(precedence) + associativityAtPrecendence(precedence);
@@ -122,26 +122,7 @@ public class ExpressionParser {
 		return child;
 	}
 
-	/**
-	 * Parses a value expression from the specified scanner
-	 * @param scan			the scanner to be used
-	 * @param precedence	the precedence at which to start
-	 * @return				the parsed value expression
-	 * @throws Exception
-	 */
-	public static Expression parseValue(Scanner scan) throws Exception {
-		if (scan.hasNext("[(]")) {
-			scan.next("[(]");
-			Expression e = ExpressionParser.parse(scan);
-			scan.next("[)]");
-			return new ValueExpression<Expression>(e);
-		}
-		if (scan.hasNext("[a-zA-Z$_][a-zA-Z1-9$_]*"))
-			return new ValueExpression<String>(scan.next("[a-zA-Z$_][a-zA-Z1-9$_]*"));
-		if (scan.hasNextInt())
-			return new ValueExpression<Integer>(scan.nextInt());	
-		throw new Exception();
-	}
+
 	
 }
 
