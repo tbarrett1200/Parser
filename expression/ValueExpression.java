@@ -27,7 +27,7 @@ public class ValueExpression extends Expression {
 		} else if (scan.hasNextInt()) {
 			value = scan.nextInt();	
 		} else {
-			throw new Exception();
+			throw new Exception("Parse Not Found");
 		}
 	}
 	

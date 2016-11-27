@@ -1,27 +1,23 @@
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import declaration.Declaration;
-import declaration.FunctionDeclaration;
-import declaration.VariableDeclaration;
+import statement.Statement;
 
 public class Program {
 
-	HashMap<String, Declaration> variables = new HashMap<String, Declaration>();
-	HashMap<String, Declaration> functions = new HashMap<String, Declaration>();
+	ArrayList<Statement> statements = new ArrayList<Statement>();
 
-	public Program(Scanner scan) {				
+	public Program(Scanner scan) throws Exception {				
+		
 		try {
 			while (true) {
-				Declaration d = Declaration.parse(scan);
-				if (d instanceof VariableDeclaration) variables.put(d.identifier, d);
-				else if (d instanceof FunctionDeclaration) functions.put(d.identifier, d);
-
+				statements.add(Statement.parse(scan));
 			}
 		} catch (Exception e) {
-			if (!functions.containsKey("main")) {
-				System.out.println("Error: no main method found");
+			if (e.getMessage().equals("Parse Not Found")) {
+				if (scan.hasNext())  throw new Exception("Syntax Error: Expecting Statement");
 			}
+			else throw e;
 		}
 	}
 	
@@ -29,12 +25,8 @@ public class Program {
 	public String toString() {
 	    String program = "Program Start\n";
 	    
-	    for (Declaration d: variables.values()) {
-		program += d;
-	    }
-	    
-	    for (Declaration d: functions.values()) {
-		program += d;
+	    for (Statement d: statements) {
+	    	program += d + "\n";
 	    }
 	    
 	    program += "Program End\n";

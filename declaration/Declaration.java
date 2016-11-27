@@ -13,10 +13,18 @@ public class Declaration {
 	}
 	
 	public static Declaration parse(Scanner scan) throws Exception {
-		Declaration d = VariableDeclaration.parse(scan);
-		if (d!=null) return d;
-		d = FunctionDeclaration.parse(scan);
-		if (d!=null) return d;
-		throw new Exception();
+		try {
+			return VariableDeclaration.parse(scan);
+		} catch (Exception e) {
+			if (!e.getMessage().equals("Parse Not Found")) throw e;
+		}
+		
+		try {
+			return FunctionDeclaration.parse(scan);
+		} catch (Exception e) {
+			if (!e.getMessage().equals("Parse Not Found")) throw e;
+		}
+		
+		throw new Exception("Parse Not Found");
 	}
 }

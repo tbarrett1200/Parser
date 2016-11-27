@@ -4,15 +4,8 @@ import java.util.Scanner;
 
 public abstract class Expression {	
 	public static String operatorTable[][] = {
-			{"(\\.)","LEFT","INFIX"},
-			{"(\\+\\+|--)","LEFT","POSTFIX"},
-			{"(\\+|-|\\+\\+|--|!|~)","RIGHT","PREFIX"},
 			{"[*/%]","LEFT","INFIX"},
-			{"[+=]","LEFT","INFIX"},
-			{"<|<=|>|>=","LEFT","INFIX"},
-			{"==|!=","LEFT","INFIX"},
-			{"&|\\^|\\|","LEFT","INFIX"},
-			{"&&|\\|\\|","LEFT","INFIX"}
+			{"[+-]","LEFT","INFIX"},
 		};
 
 	private static String associativityAtPrecendence(int precedence) {
@@ -74,6 +67,9 @@ public abstract class Expression {
 
 	/* helper method for parseInfixLeft */
 	private static Expression recursiveParseInfixLeft(Scanner scan, int precedence, Expression left) throws Exception {
+		if (scan.hasNext("=")) {
+			throw new Exception("Syntax Error");
+		}
 		if (scan.hasNext(operatorTable[precedence-1][0])) {
 			String op = scan.next();
 			Expression right = parseAtPrecedence(scan, precedence-1);
@@ -129,6 +125,4 @@ public abstract class Expression {
 class Operator {
 	enum Associativity {Left, Right, None;};
 	enum Fixity {Prefix, Postfix, Infix};
-
-	
 }
