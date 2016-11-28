@@ -1,13 +1,14 @@
-import java.util.Scanner;
+package main;
+import java.io.FileInputStream;
 
 public class Driver {
 	
-	public static Scanner scan = new Scanner(System.in);
 
 	public static void main(String[] args) {
 			
 		try {
-			Program p = new Program(scan);
+			Lexer l = new Lexer(new FileInputStream("/Users/thomasbarrett/Desktop/new.txt"));
+			Program p = new Program(l);
 			System.out.println(p);
 		} catch (Exception e) {
 			e.printStackTrace();

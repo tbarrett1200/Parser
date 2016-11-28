@@ -1,6 +1,6 @@
 package expression;
 
-import java.util.Scanner;
+import main.Lexer;;
 
 public class ValueExpression extends Expression {
 
@@ -17,18 +17,18 @@ public class ValueExpression extends Expression {
 	 * @return				the parsed value expression
 	 * @throws Exception
 	 */
-	public ValueExpression(Scanner scan) throws Exception {
+	public static ValueExpression parse(Lexer scan) throws Exception {
 		if (scan.hasNext("[(]")) {
-			scan.next("[(]");
-			value = Expression.parse(scan);
-			scan.next("[)]");
+			scan.next();
+			Expression e = Expression.parse(scan);
+			if (e == null) throw new Exception("Syntax Error: Value Expression: Expecting Expression");
+			expect(scan, "\\)", "Syntax Error: Value Expression: Expecting ')'");
+			return new ValueExpression(e);
 		} else if (scan.hasNext("[a-zA-Z$_][a-zA-Z1-9$_]*")) {
-			value = scan.next("[a-zA-Z$_][a-zA-Z1-9$_]*");
-		} else if (scan.hasNextInt()) {
-			value = scan.nextInt();	
-		} else {
-			throw new Exception("Parse Not Found");
-		}
+			return new ValueExpression(scan.next());
+		} else if (scan.hasNext("[0-9]+")) {
+			return new ValueExpression(scan.next());	
+		} else return null;
 	}
 	
 	public String toString() {

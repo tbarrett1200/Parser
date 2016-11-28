@@ -1,6 +1,6 @@
 package declaration;
 
-import java.util.Scanner;
+import main.Lexer;
 
 public class VariableDeclaration extends Declaration {
     
@@ -8,14 +8,11 @@ public class VariableDeclaration extends Declaration {
     	super(type, identifier);
     }
       
-    public static VariableDeclaration parse(Scanner scan) throws Exception {
-		if (scan.hasNext("var")) {
-		    String type = scan.next();
-		    if (scan.hasNext("[a-zA-Z][a-zA-Z0-9]*")) {
-		    	String identifier = scan.next();
-		    	return new VariableDeclaration(type, identifier);
-		    } else throw new Exception("Syntax Error");
-		} else throw new Exception("Parse Not Found");	
+    public static VariableDeclaration parse(Lexer scan) throws Exception {
+		if (accept(scan, "var") == null) return null;
+		String type = expect(scan, "[a-zA-Z][a-zA-Z0-9]*", "Syntax Error: Variable Declaration: Expecting type");
+		String identifier = expect(scan, "[a-zA-Z][a-zA-Z0-9]*", "Syntax Error: Variable Declaration: Expecting identifier");
+		return new VariableDeclaration(type, identifier);
     }
     
     @Override

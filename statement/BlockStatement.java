@@ -1,7 +1,7 @@
 package statement;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import main.Lexer;
 
 public class BlockStatement extends Statement {
 
@@ -11,24 +11,20 @@ public class BlockStatement extends Statement {
 		this.statements = statements;
 	}
 	
-	public static BlockStatement parse(Scanner scan) throws Exception {
-		if (scan.hasNext("\\{")) scan.next();
-		else throw new Exception("Parse Not Found");
+	public static BlockStatement parse(Lexer scan) throws Exception {
+		if (accept(scan,"\\{") == null) return null;
 		
 		ArrayList<Statement> statements = new ArrayList<Statement>();
+		Statement s = Statement.parse(scan);
 		
-		try {
-			while(true) statements.add(Statement.parse(scan));
-		} catch (Exception e) {
-			if (e.getMessage().equals("Parse Not Found")) {
-				 if (scan.hasNext("\\}")) {
-					 scan.next();
-					 return new BlockStatement(statements);
-				 }
-				 else throw new Exception("Syntax Error");
-			} else throw e;
+		while (s != null) {
+			statements.add(s);
+			s = Statement.parse(scan);
 		}
 		
+		expect(scan, "\\}", "Syntax Error: Block Statement: Expecting '}'");
+		
+		return new BlockStatement(statements);
 	}
 	
 	@Override

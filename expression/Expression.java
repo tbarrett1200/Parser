@@ -1,11 +1,27 @@
 package expression;
 
-import java.util.Scanner;
+import main.Lexer;
 
 public abstract class Expression {	
+	
+	public static String accept(Lexer scan, String pattern) {
+		if (scan.hasNext(pattern)) {
+			return scan.next(); 
+		}
+		return null;
+	}
+	
+	public static String expect(Lexer scan, String pattern, String error) throws Exception {
+		if (scan.hasNext(pattern)) {
+			return scan.next(); 
+		}
+		throw new Exception(error);
+	}
+	
 	public static String operatorTable[][] = {
 			{"[*/%]","LEFT","INFIX"},
 			{"[+-]","LEFT","INFIX"},
+			{"[=]","LEFT","INFIX"},
 		};
 
 	private static String associativityAtPrecendence(int precedence) {
@@ -16,28 +32,30 @@ public abstract class Expression {
 		return operatorTable[precedence-1][2];
 	}
 	
+	
+	
 	/**
-	 * Parses an expression from the specified scanner, starting from the highest precedence in the operatorTable.
+	 * Parses an expression from the specified Lexer, starting from the highest precedence in the operatorTable.
 	 * This method recursively parses all lower precedences using data from the operatorTable to build the expression
-	 * @param scan			the scanner to be used
-	 * @return				the expression parsed from the specified scanner	
+	 * @param scan			the Lexer to be used
+	 * @return				the expression parsed from the specified Lexer	
 	 * @throws Exception
 	 */
-	public static Expression parse(Scanner scanner) throws Exception {
-		return parseAtPrecedence(scanner,operatorTable.length);
+	public static Expression parse(Lexer Lexer) throws Exception {
+		return parseAtPrecedence(Lexer,operatorTable.length);
 	}
 	
 	/**
-	 * Parses a sub-expression from the specified scanner, starting from the specified precedence.
+	 * Parses a sub-expression from the specified Lexer, starting from the specified precedence.
 	 * This method recursively parses all lower precedences using data from the operatorTable to build the expression
-	 * @param scan			the scanner to be used
+	 * @param scan			the Lexer to be used
 	 * @param precedence	the precedence at which to start
 	 * @return				the sub-expression at the specified precedence
 	 * @throws Exception
 	 */
-	private static Expression parseAtPrecedence(Scanner scan, int precedence) throws Exception {
+	private static Expression parseAtPrecedence(Lexer scan, int precedence) throws Exception {
 		//parses values once running out of operators
-		if (precedence == 0) return new ValueExpression(scan);
+		if (precedence == 0) return ValueExpression.parse(scan);
 		
 		//a string representation of the operator fixity and associativity
 		String operatorType = fixityAtPrecendence(precedence) + associativityAtPrecendence(precedence);
@@ -56,35 +74,34 @@ public abstract class Expression {
 	
 	/**
 	 * Parses the precedence level of an expression that contains left-associative infix operators
-	 * @param scan			the scanner to be used
+	 * @param scan			the Lexer to be used
 	 * @param precedence	the precedence at which to start
 	 * @return				the sub-expression
 	 */
-	public static Expression parseInfixLeft(Scanner scan, int precedence) throws Exception {
+	public static Expression parseInfixLeft(Lexer scan, int precedence) throws Exception {
 		Expression left = parseAtPrecedence(scan,precedence-1);
+		if (left == null) return null;
 		return recursiveParseInfixLeft(scan, precedence, left);
 	}
 
 	/* helper method for parseInfixLeft */
-	private static Expression recursiveParseInfixLeft(Scanner scan, int precedence, Expression left) throws Exception {
-		if (scan.hasNext("=")) {
-			throw new Exception("Syntax Error");
-		}
+	private static Expression recursiveParseInfixLeft(Lexer scan, int precedence, Expression left) throws Exception {
 		if (scan.hasNext(operatorTable[precedence-1][0])) {
 			String op = scan.next();
 			Expression right = parseAtPrecedence(scan, precedence-1);
+			if (right == null) return null;
 			return recursiveParseInfixLeft(scan, precedence, new BinaryExpression(left,op,right));
 		} else return left;
 	}
 	
 	/**
 	 * Parses the precedence level of an expression that contains right-associative prefix operators
-	 * @param scan			the scanner to be used
+	 * @param scan			the Lexer to be used
 	 * @param precedence	the precedence at which to start
 	 * @return				the sub-expression
 	 * @throws Exception
 	 */
-	public static Expression parsePrefixRight(Scanner scan, int precedence) throws Exception {
+	public static Expression parsePrefixRight(Lexer scan, int precedence) throws Exception {
 		//return operations at current precedence if any
 		if (scan.hasNext(operatorTable[precedence-1][0])) { 
 			String op = scan.next();
@@ -99,18 +116,18 @@ public abstract class Expression {
 	
 	/**
 	 * Parses the precedence level of an expression that contains left-associative postfix operators
-	 * @param scan			the scanner to be used
+	 * @param scan			the Lexer to be used
 	 * @param precedence	the precedence at which to start
 	 * @return				the sub-expression
 	 * @throws Exception
 	 */
-	public static Expression parsePostfixLeft(Scanner scan, int precedence) throws Exception {
+	public static Expression parsePostfixLeft(Lexer scan, int precedence) throws Exception {
 		Expression exp = parseAtPrecedence(scan, precedence-1);
 		return recursiveParsePostfixLeft(scan, precedence, exp);
 	}
 	
 	/* helper method for parsePostfixLeft */ 
-	public static Expression recursiveParsePostfixLeft(Scanner scan, int precedence, Expression child) {
+	public static Expression recursiveParsePostfixLeft(Lexer scan, int precedence, Expression child) {
 		if (scan.hasNext(operatorTable[precedence-1][0])) {
 			String op = scan.next();
 			return recursiveParsePostfixLeft(scan, precedence, new UnaryExpression(child,op));

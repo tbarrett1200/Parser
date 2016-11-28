@@ -1,29 +1,28 @@
 package statement;
 
-import java.util.Scanner;
+import main.Lexer;
 
 public class Statement {
 
-	public static Statement parse(Scanner scan) throws Exception {
-		try {
-			return DeclarationStatement.parse(scan);
-		} catch (Exception e) {
-			if (!e.getMessage().equals("Parse Not Found")) throw e;
+	public static String accept(Lexer scan, String pattern) {
+		if (scan.hasNext(pattern)) {
+			return scan.next(); 
 		}
-
-		try {
-			return BlockStatement.parse(scan);
-		} catch (Exception e) {
-			if (!e.getMessage().equals("Parse Not Found")) throw e;
+		return null;
+	}
+	
+	public static String expect(Lexer scan, String pattern, String error) throws Exception {
+		if (scan.hasNext(pattern)) {
+			return scan.next(); 
 		}
-		
-		try {
-			return ExpressionStatement.parse(scan);
-		} catch (Exception e) {
-			if (!e.getMessage().equals("Parse Not Found")) throw e;
-		}
-		
-		
-		throw new Exception("Parse Not Found");
+		throw new Exception(error);
+	}
+	
+	public static Statement parse(Lexer scan) throws Exception {	
+		Statement s = null;
+		if (s == null) s = DeclarationStatement.parse(scan);
+		if (s == null) s = BlockStatement.parse(scan);
+		if (s == null) s = ExpressionStatement.parse(scan);
+		return s;
 	}
 }

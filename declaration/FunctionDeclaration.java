@@ -6,7 +6,7 @@
 package declaration;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import main.Lexer;
 
 import statement.BlockStatement;
 
@@ -21,55 +21,33 @@ public class FunctionDeclaration extends Declaration {
     	this.definition = definition;
     }
     
-    public static FunctionDeclaration parse(Scanner scan) throws Exception {
-    	if (scan.hasNext("func")) {
-    		String type  = scan.next();
-    		
-    		String identifier;
-    		ArrayList<VariableDeclaration> parameters =  new ArrayList<VariableDeclaration>();
-    		BlockStatement definition;
-    		
-		    if (scan.hasNext("[a-zA-Z][a-zA-Z0-9]*")) {
-		    	identifier = scan.next();
-		    } else throw new Exception("Syntax Error: Function Declaration: Expecting Identifier");
-		    
-		    if (scan.hasNext("\\(")) {
-		    	scan.next();
-		    } else throw new Exception("Syntax Error: Function Declaration: Expecting '('");
-		    
-		    try {
-	    		parameters.add(VariableDeclaration.parse(scan));
-		    } catch (Exception e) {
-		    	if (!e.getMessage().equals("Parse Not Found")) throw e;
-		    }
-		    
-		    while (scan.hasNext(",")) {
-		    	scan.next();
-		    			
-		    	try {
-		    		parameters.add(VariableDeclaration.parse(scan));
-		    	} catch (Exception e) {
-		    		if (e.getMessage().equals("Parse Not Found")) {
-		    			throw new Exception("Syntax Error: Function Declaration: Expecting VariableDeclaration");
-		    		}
-		    	}
-		    }
-		    
-		    
-		    if (scan.hasNext("\\)")) {
-		    	scan.next();
-		    } else throw new Exception("Syntax Error: Function Declaration: Expecting ')'");
-		    
-		    try {
-		    	definition = BlockStatement.parse(scan);
-		    } catch(Exception e) {
-		    	if (e.getMessage().equals("Parse Not Found")) throw new Exception("Syntax Error: Function Declaration: Expecting BlockStatement");
-		    	else throw e;
-		    }
-		    
-	    	return new FunctionDeclaration(type, identifier, parameters, definition);
+    public static FunctionDeclaration parse(Lexer scan) throws Exception {
+    	if (accept(scan,"func") == null) return null;
+    	
+    	String type = expect(scan, "[a-zA-Z][a-zA-Z0-9]*", "Syntax Error: Function Declaration: Expecting Type");
+    	String identifier = expect(scan, "[a-zA-Z][a-zA-Z0-9]*", "Syntax Error: Function Declaration: Expecting Identifier");
 
-		} else throw new Exception("Parse Not Found");
+		expect(scan, "\\(", "Syntax Error: Function Declaration: Expecting '('");
+		
+    	ArrayList<VariableDeclaration> parameters =  new ArrayList<VariableDeclaration>();
+		
+    	VariableDeclaration p = VariableDeclaration.parse(scan);
+		
+    	if (p != null) {
+    		parameters.add(p);
+    		while (accept(scan,",") != null) {
+    			p = VariableDeclaration.parse(scan);
+    			if (p == null) throw new Exception("Syntax Error: Function Declaration: Expecting Parameter");
+    			parameters.add(p);
+    		}
+    	}
+    	
+		expect(scan, "\\)", "Syntax Error: Function Declaration: Expecting ')'");
+		
+		BlockStatement block = BlockStatement.parse(scan);
+		if (block == null) throw new Exception("Syntax Error: Function Declaration: Expecting Block Statement");
+		    
+	    return new FunctionDeclaration(type, identifier, parameters, block);
     }
     
     @Override

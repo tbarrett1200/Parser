@@ -1,5 +1,5 @@
+package main;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import statement.Statement;
 
@@ -7,18 +7,15 @@ public class Program {
 
 	ArrayList<Statement> statements = new ArrayList<Statement>();
 
-	public Program(Scanner scan) throws Exception {				
+	public Program(Lexer scan) throws Exception {				
+		Statement s = Statement.parse(scan);
 		
-		try {
-			while (true) {
-				statements.add(Statement.parse(scan));
-			}
-		} catch (Exception e) {
-			if (e.getMessage().equals("Parse Not Found")) {
-				if (scan.hasNext())  throw new Exception("Syntax Error: Expecting Statement");
-			}
-			else throw e;
+		while (s != null) {
+			statements.add(s);
+			s = Statement.parse(scan);
 		}
+	
+		if (scan.hasNext()) throw new Exception("Syntax Error: Program: Expecting End Of File");
 	}
 	
 	@Override

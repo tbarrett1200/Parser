@@ -1,6 +1,6 @@
 package statement;
 
-import java.util.Scanner;
+import main.Lexer;
 
 import declaration.Declaration;
 
@@ -11,13 +11,10 @@ public class DeclarationStatement extends Statement {
 		this.declaration = declaration;
 	}
 	
-	public static DeclarationStatement parse(Scanner scan) throws Exception {
+	public static DeclarationStatement parse(Lexer scan) throws Exception {
 		Declaration declaration = Declaration.parse(scan);
-			
-		if (scan.hasNext(";")) {
-			scan.next();
-		} else throw new Exception("Syntax Error: Declaratation Statement: Expecting ';'");
-			
+		if (declaration == null) return null;
+		expect(scan, ";", "Syntax Error: Expression Statement: Expecting ';'");
 		return new DeclarationStatement(declaration);	
 	}
 	

@@ -1,30 +1,36 @@
 package declaration;
 
-import java.util.Scanner;
+import main.Lexer;
 
 public class Declaration {
 
 	public String type;
 	public String identifier;
 	
+	public static String accept(Lexer scan, String pattern) {
+		if (scan.hasNext(pattern)) {
+			return scan.next(); 
+		}
+		return null;
+	}
+	
+	public static String expect(Lexer scan, String pattern, String error) throws Exception {
+		if (scan.hasNext(pattern)) {
+			return scan.next(); 
+		}
+		throw new Exception(error);
+	}
+	
 	public Declaration(String type, String identifier) {
 		this.type = type;
 		this.identifier = identifier;
 	}
 	
-	public static Declaration parse(Scanner scan) throws Exception {
-		try {
-			return VariableDeclaration.parse(scan);
-		} catch (Exception e) {
-			if (!e.getMessage().equals("Parse Not Found")) throw e;
-		}
+	public static Declaration parse(Lexer scan) throws Exception {
+		Declaration d = null;
+		if (d == null) d = VariableDeclaration.parse(scan);
+		if (d == null) d = FunctionDeclaration.parse(scan);
+		return d;
 		
-		try {
-			return FunctionDeclaration.parse(scan);
-		} catch (Exception e) {
-			if (!e.getMessage().equals("Parse Not Found")) throw e;
-		}
-		
-		throw new Exception("Parse Not Found");
 	}
 }
