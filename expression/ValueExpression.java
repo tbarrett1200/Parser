@@ -1,6 +1,6 @@
 package expression;
 
-import main.Lexer;;
+import main.Scanner;;
 
 public class ValueExpression extends Expression {
 
@@ -17,7 +17,7 @@ public class ValueExpression extends Expression {
 	 * @return				the parsed value expression
 	 * @throws Exception
 	 */
-	public static ValueExpression parse(Lexer scan) throws Exception {
+	public static ValueExpression parse(Scanner scan) throws Exception {
 		if (scan.hasNext("[(]")) {
 			scan.next();
 			Expression e = Expression.parse(scan);

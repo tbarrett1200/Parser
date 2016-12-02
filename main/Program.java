@@ -1,21 +1,31 @@
 package main;
+
 import java.util.ArrayList;
 
+import statement.DeclarationStatement;
 import statement.Statement;
 
 public class Program {
 
-	ArrayList<Statement> statements = new ArrayList<Statement>();
+	private ArrayList<DeclarationStatement> statements;
 
-	public Program(Lexer scan) throws Exception {				
-		Statement s = Statement.parse(scan);
-		
-		while (s != null) {
-			statements.add(s);
-			s = Statement.parse(scan);
-		}
+	public Program(ArrayList<DeclarationStatement> statements) {
+	    this.statements = statements;
+	}
 	
-		if (scan.hasNext()) throw new Exception("Syntax Error: Program: Expecting End Of File");
+	public static Program parse(Scanner scan) throws Exception {
+	    
+	    ArrayList<DeclarationStatement> statements = new ArrayList<DeclarationStatement>();
+	    
+	    DeclarationStatement s = DeclarationStatement.parse(scan);
+	    while (s != null) {
+		statements.add(s);
+		s = DeclarationStatement.parse(scan);
+	    }
+	
+	    if (scan.hasNext()) throw new Exception("Syntax Error: Program: Expecting End Of File");
+	    
+	    return new Program(statements);
 	}
 	
 	@Override

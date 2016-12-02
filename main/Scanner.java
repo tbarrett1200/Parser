@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Lexer {
+public class Scanner {
 
 	private ArrayList<String> tokens = new ArrayList<String>();
 	private int index = 0;
@@ -14,7 +14,7 @@ public class Lexer {
 	private Pattern space = Pattern.compile(" ");
 	private Pattern[] patterns = {identifier, number, space, operator};
 	
-	public Lexer(String file) {
+	public Scanner(String file) {
 	    Matcher match = Pattern.compile("").matcher(file);
 	    int start = 0;
 	    loop: while(true) {

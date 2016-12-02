@@ -1,7 +1,7 @@
 package statement;
 
 import java.util.ArrayList;
-import main.Lexer;
+import main.Scanner;
 
 public class BlockStatement extends Statement {
 
@@ -11,7 +11,7 @@ public class BlockStatement extends Statement {
 		this.statements = statements;
 	}
 	
-	public static BlockStatement parse(Lexer scan) throws Exception {
+	public static BlockStatement parse(Scanner scan) throws Exception {
 		if (accept(scan,"\\{") == null) return null;
 		
 		ArrayList<Statement> statements = new ArrayList<Statement>();

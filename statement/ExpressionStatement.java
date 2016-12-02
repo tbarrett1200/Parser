@@ -1,6 +1,6 @@
 package statement;
 
-import main.Lexer;
+import main.Scanner;
 
 import expression.Expression;
 
@@ -12,7 +12,7 @@ public class ExpressionStatement extends Statement {
 		this.expression = expression;
 	}
 	
-	public static ExpressionStatement parse(Lexer scan) throws Exception {
+	public static ExpressionStatement parse(Scanner scan) throws Exception {
 		Expression expression = Expression.parse(scan);
 		if (expression == null) return null;
 		expect(scan, ";", "Syntax Error: Expression Statement: Expecting ';'");

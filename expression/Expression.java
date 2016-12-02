@@ -1,17 +1,17 @@
 package expression;
 
-import main.Lexer;
+import main.Scanner;
 
 public abstract class Expression {	
 	
-	public static String accept(Lexer scan, String pattern) {
+	public static String accept(Scanner scan, String pattern) {
 		if (scan.hasNext(pattern)) {
 			return scan.next(); 
 		}
 		return null;
 	}
 	
-	public static String expect(Lexer scan, String pattern, String error) throws Exception {
+	public static String expect(Scanner scan, String pattern, String error) throws Exception {
 		if (scan.hasNext(pattern)) {
 			return scan.next(); 
 		}
@@ -41,7 +41,7 @@ public abstract class Expression {
 	 * @return				the expression parsed from the specified Lexer	
 	 * @throws Exception
 	 */
-	public static Expression parse(Lexer Lexer) throws Exception {
+	public static Expression parse(Scanner Lexer) throws Exception {
 		return parseAtPrecedence(Lexer,operatorTable.length);
 	}
 	
@@ -53,7 +53,7 @@ public abstract class Expression {
 	 * @return				the sub-expression at the specified precedence
 	 * @throws Exception
 	 */
-	private static Expression parseAtPrecedence(Lexer scan, int precedence) throws Exception {
+	private static Expression parseAtPrecedence(Scanner scan, int precedence) throws Exception {
 		//parses values once running out of operators
 		if (precedence == 0) return ValueExpression.parse(scan);
 		
@@ -78,14 +78,14 @@ public abstract class Expression {
 	 * @param precedence	the precedence at which to start
 	 * @return				the sub-expression
 	 */
-	public static Expression parseInfixLeft(Lexer scan, int precedence) throws Exception {
+	public static Expression parseInfixLeft(Scanner scan, int precedence) throws Exception {
 		Expression left = parseAtPrecedence(scan,precedence-1);
 		if (left == null) return null;
 		return recursiveParseInfixLeft(scan, precedence, left);
 	}
 
 	/* helper method for parseInfixLeft */
-	private static Expression recursiveParseInfixLeft(Lexer scan, int precedence, Expression left) throws Exception {
+	private static Expression recursiveParseInfixLeft(Scanner scan, int precedence, Expression left) throws Exception {
 		if (scan.hasNext(operatorTable[precedence-1][0])) {
 			String op = scan.next();
 			Expression right = parseAtPrecedence(scan, precedence-1);
@@ -101,7 +101,7 @@ public abstract class Expression {
 	 * @return				the sub-expression
 	 * @throws Exception
 	 */
-	public static Expression parsePrefixRight(Lexer scan, int precedence) throws Exception {
+	public static Expression parsePrefixRight(Scanner scan, int precedence) throws Exception {
 		//return operations at current precedence if any
 		if (scan.hasNext(operatorTable[precedence-1][0])) { 
 			String op = scan.next();
@@ -121,13 +121,13 @@ public abstract class Expression {
 	 * @return				the sub-expression
 	 * @throws Exception
 	 */
-	public static Expression parsePostfixLeft(Lexer scan, int precedence) throws Exception {
+	public static Expression parsePostfixLeft(Scanner scan, int precedence) throws Exception {
 		Expression exp = parseAtPrecedence(scan, precedence-1);
 		return recursiveParsePostfixLeft(scan, precedence, exp);
 	}
 	
 	/* helper method for parsePostfixLeft */ 
-	public static Expression recursiveParsePostfixLeft(Lexer scan, int precedence, Expression child) {
+	public static Expression recursiveParsePostfixLeft(Scanner scan, int precedence, Expression child) {
 		if (scan.hasNext(operatorTable[precedence-1][0])) {
 			String op = scan.next();
 			return recursiveParsePostfixLeft(scan, precedence, new UnaryExpression(child,op));

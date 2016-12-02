@@ -1,6 +1,6 @@
 package declaration;
 
-import main.Lexer;
+import main.Scanner;
 
 public class VariableDeclaration extends Declaration {
     
@@ -8,7 +8,7 @@ public class VariableDeclaration extends Declaration {
     	super(type, identifier);
     }
       
-    public static VariableDeclaration parse(Lexer scan) throws Exception {
+    public static VariableDeclaration parse(Scanner scan) throws Exception {
 		if (accept(scan, "var") == null) return null;
 		String type = expect(scan, "[a-zA-Z][a-zA-Z0-9]*", "Syntax Error: Variable Declaration: Expecting type");
 		String identifier = expect(scan, "[a-zA-Z][a-zA-Z0-9]*", "Syntax Error: Variable Declaration: Expecting identifier");

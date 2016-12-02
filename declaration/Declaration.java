@@ -1,20 +1,20 @@
 package declaration;
 
-import main.Lexer;
+import main.Scanner;
 
 public class Declaration {
 
 	public String type;
 	public String identifier;
 	
-	public static String accept(Lexer scan, String pattern) {
+	public static String accept(Scanner scan, String pattern) {
 		if (scan.hasNext(pattern)) {
 			return scan.next(); 
 		}
 		return null;
 	}
 	
-	public static String expect(Lexer scan, String pattern, String error) throws Exception {
+	public static String expect(Scanner scan, String pattern, String error) throws Exception {
 		if (scan.hasNext(pattern)) {
 			return scan.next(); 
 		}
@@ -26,7 +26,7 @@ public class Declaration {
 		this.identifier = identifier;
 	}
 	
-	public static Declaration parse(Lexer scan) throws Exception {
+	public static Declaration parse(Scanner scan) throws Exception {
 		Declaration d = null;
 		if (d == null) d = VariableDeclaration.parse(scan);
 		if (d == null) d = FunctionDeclaration.parse(scan);

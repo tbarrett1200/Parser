@@ -6,7 +6,7 @@
 package declaration;
 
 import java.util.ArrayList;
-import main.Lexer;
+import main.Scanner;
 
 import statement.BlockStatement;
 
@@ -21,7 +21,7 @@ public class FunctionDeclaration extends Declaration {
     	this.definition = definition;
     }
     
-    public static FunctionDeclaration parse(Lexer scan) throws Exception {
+    public static FunctionDeclaration parse(Scanner scan) throws Exception {
     	if (accept(scan,"func") == null) return null;
     	
     	String type = expect(scan, "[a-zA-Z][a-zA-Z0-9]*", "Syntax Error: Function Declaration: Expecting Type");
