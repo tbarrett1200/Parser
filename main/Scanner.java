@@ -10,7 +10,7 @@ public class Scanner {
 	
 	private Pattern identifier = Pattern.compile("[a-zA-Z][a-zA-Z0-9]*");
 	private Pattern number = Pattern.compile("[0-9]+");
-	private Pattern operator = Pattern.compile("[+-/%=;]");
+	private Pattern operator = Pattern.compile("[+-/%=;(){}]");
 	private Pattern space = Pattern.compile(" ");
 	private Pattern[] patterns = {identifier, number, space, operator};
 	
