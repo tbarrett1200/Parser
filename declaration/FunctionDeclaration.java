@@ -4,6 +4,9 @@ import main.Scanner;
 
 import statement.BlockStatement;
 
+import static main.ParserUtils.accept;
+import static main.ParserUtils.expect;
+
 public class FunctionDeclaration extends Declaration {
 
 	ArrayList<VariableDeclaration> parameters = new ArrayList<VariableDeclaration>();

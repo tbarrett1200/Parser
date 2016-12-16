@@ -2,6 +2,9 @@ package declaration;
 
 import main.Scanner;
 
+import static main.ParserUtils.accept;
+import static main.ParserUtils.expect;
+
 public class VariableDeclaration extends Declaration {
 
     public VariableDeclaration(String type, String identifier) {

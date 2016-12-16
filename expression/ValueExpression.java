@@ -1,6 +1,8 @@
 package expression;
 
-import main.Scanner;;
+import main.Scanner;
+
+import static main.ParserUtils.expect;
 
 public class ValueExpression extends Expression {
 

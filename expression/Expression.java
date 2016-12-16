@@ -4,19 +4,6 @@ import main.Scanner;
 
 public abstract class Expression {	
 	
-	public static String accept(Scanner scan, String pattern) {
-		if (scan.hasNext(pattern)) {
-			return scan.next(); 
-		}
-		return null;
-	}
-	
-	public static String expect(Scanner scan, String pattern, String error) throws Exception {
-		if (scan.hasNext(pattern)) {
-			return scan.next(); 
-		}
-		throw new Exception(error);
-	}
 	
 	public static String operatorTable[][] = {
 			{"[*/%]","LEFT","INFIX"},

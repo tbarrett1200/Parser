@@ -1,19 +1,16 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import statement.DeclarationStatement;
 import statement.Statement;
 
 public class Program {
 
-	private ArrayList<DeclarationStatement> statements;
+	private List<DeclarationStatement> statements = new ArrayList<DeclarationStatement>();
 
-	/**
-	 * Constructor
-	 * @param statements all global DeclarationStatements in the program
-	 */
-	public Program(ArrayList<DeclarationStatement> statements) {
+	public Program(List<DeclarationStatement> statements) {
 	    this.statements = statements;
 	}
 	

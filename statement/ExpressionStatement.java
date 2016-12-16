@@ -1,14 +1,15 @@
 package statement;
 
 import main.Scanner;
-
 import expression.Expression;
+
+import static main.ParserUtils.expect;
 
 public class ExpressionStatement extends Statement {
 
-	public Expression expression;
+	private Expression expression;
 	
-	public ExpressionStatement(Expression expression) {
+	private ExpressionStatement(Expression expression) {
 		this.expression = expression;
 	}
 	

@@ -3,6 +3,9 @@ package statement;
 import java.util.ArrayList;
 import main.Scanner;
 
+import static main.ParserUtils.accept;
+import static main.ParserUtils.expect;
+
 public class BlockStatement extends Statement {
 
 	ArrayList<Statement> statements = new ArrayList<Statement>();

@@ -4,8 +4,10 @@ import main.Scanner;
 
 import declaration.Declaration;
 
+import static main.ParserUtils.expect;
+
 public class DeclarationStatement extends Statement {
-	public Declaration declaration;
+	private Declaration declaration;
 	
 	public DeclarationStatement(Declaration declaration) {
 		this.declaration = declaration;
