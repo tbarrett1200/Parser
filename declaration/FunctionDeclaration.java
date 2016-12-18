@@ -50,8 +50,15 @@ public class FunctionDeclaration extends Declaration {
     @Override
     public String toString() {
         String text = "func " + type + " " + identifier + "(";
-        for (VariableDeclaration d: parameters.subList(0, parameters.size()-1)) text += d + ", ";
-        text += parameters.get(parameters.size()-1) + ")";
+        if (parameters.size() == 0) {
+        	text += ") ";
+        } else {
+        	for (VariableDeclaration d: parameters.subList(0, parameters.size()-1)) {
+        		text += d + ", ";
+        	}
+        	text += parameters.get(parameters.size()-1) + ") ";
+        }
+        text += definition;
         return text;
     }
 }

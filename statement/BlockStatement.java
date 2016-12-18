@@ -35,10 +35,10 @@ public class BlockStatement extends Statement {
 		  String program = "{\n";
 		    
 		    for (Statement d: statements) {
-		    	program += d + "\n";
+		    	program += "  " + d + "\n";
 		    }
 		    
-		    program += "}\n";
+		    program += "}";
 		    
 		    return program;
 	}

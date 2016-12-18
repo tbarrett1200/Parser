@@ -8,8 +8,8 @@ public class Driver {
 	public static void main(String[] args) {
 
 		try {
-			Scanner l = new Scanner("var int a;");
-			Program p =Program.parse(l);
+			Scanner scan = new Scanner("func int a(var int a) { var int x; x = 1;};");
+			Program p = Program.parse(scan);
 			System.out.println(p);
 		} catch (Exception e) {
 			e.printStackTrace();

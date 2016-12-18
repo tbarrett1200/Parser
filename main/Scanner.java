@@ -1,18 +1,26 @@
 package main;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import operator.OperatorTable;
 
 public class Scanner {
 
 	private ArrayList<String> tokens = new ArrayList<String>();
 	private int index = 0;
 	
+	private static String[] PUNCTUATION = {";", ":", "(", ")", "{", "}", ",", ".", "[", "]" };
+	
 	private Pattern identifier = Pattern.compile("[a-zA-Z][a-zA-Z0-9]*");
 	private Pattern number = Pattern.compile("[0-9]+");
-	private Pattern operator = Pattern.compile("[+-/%=;(){}]");
-	private Pattern space = Pattern.compile(" ");
-	private Pattern[] patterns = {identifier, number, space, operator};
+	private Pattern punctuation = Pattern.compile(ParserUtils.generateRegex(Arrays.asList(PUNCTUATION)));
+	private Pattern operator = Pattern.compile(OperatorTable.getOperatorRegex());
+	private Pattern space = Pattern.compile("[\t\n ]");
+	
+	private Pattern[] patterns = {identifier, number, space, operator, punctuation};
 	
 	public Scanner(String file) {
 	    Matcher match = Pattern.compile("").matcher(file);

@@ -8,10 +8,14 @@ import statement.Statement;
 
 public class Program {
 
-	private List<DeclarationStatement> statements = new ArrayList<DeclarationStatement>();
+	private List<DeclarationStatement> declarations;
 
-	public Program(List<DeclarationStatement> statements) {
-	    this.statements = statements;
+	/**
+	 * Constructor
+	 * @param statements all global DeclarationStatements in the program
+	 */
+	private Program(ArrayList<DeclarationStatement> statements) {
+	    this.declarations = statements;
 	}
 	
 	/**
@@ -27,12 +31,13 @@ public class Program {
 	    if (scan.hasNext()) throw new Exception("Syntax Error: Program: Expecting End Of File");  
 	    return new Program(statements);
 	}
+
 	
 	@Override
 	public String toString() {
 	    String text = ""; 
-	    if (statements.size() == 0) return text;
-	    for (Statement d: statements.subList(0, statements.size()-1)) text += d + "\n"; 
-	    return text + statements.get(statements.size()-1);
+	    if (declarations.size() == 0) return text;
+	    for (Statement d: declarations.subList(0, declarations.size()-1)) text += d + "\n"; 
+	    return text + declarations.get(declarations.size()-1);
 	}
 }
