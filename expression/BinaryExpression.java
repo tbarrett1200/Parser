@@ -5,9 +5,9 @@ import operator.OperatorTable;
 
 public class BinaryExpression extends Expression {
 	
-	Expression left;
-	String op;
-	Expression right;
+	private Expression left;
+	private String op;
+	private Expression right;
 	
 	
 	public BinaryExpression(Expression left, String op, Expression right) {

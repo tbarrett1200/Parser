@@ -9,8 +9,8 @@ import static main.ParserUtils.expect;
 
 public class FunctionDeclaration extends Declaration {
 
-	ArrayList<VariableDeclaration> parameters = new ArrayList<VariableDeclaration>();
-	BlockStatement definition;
+	private ArrayList<VariableDeclaration> parameters = new ArrayList<VariableDeclaration>();
+	private BlockStatement definition;
 
     public FunctionDeclaration(String type, String identifier, ArrayList<VariableDeclaration> parameters, BlockStatement definition) {
     	super(type, identifier);

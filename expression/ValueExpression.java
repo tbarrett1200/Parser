@@ -6,7 +6,7 @@ import static main.ParserUtils.expect;
 
 public class ValueExpression extends Expression {
 
-	final Object value;
+	private Object value;
 	
 	public ValueExpression(Object value) {
 		this.value = value;
@@ -26,7 +26,9 @@ public class ValueExpression extends Expression {
 			if (e == null) throw new Exception("Syntax Error: Value Expression: Expecting Expression");
 			expect(scan, "\\)", "Syntax Error: Value Expression: Expecting ')'");
 			return new ValueExpression(e);
-		} else if (scan.hasNext("[a-zA-Z$_][a-zA-Z1-9$_]*")) {
+		} else if (scan.hasNext("[a-zA-Z$_][a-zA-Z1-9]*")) {
+			FunctionCall call = FunctionCall.parse(scan);
+			if (call!=null) return new ValueExpression(call);
 			return new ValueExpression(scan.next());
 		} else if (scan.hasNext("[0-9]+")) {
 			return new ValueExpression(scan.next());	

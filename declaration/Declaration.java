@@ -4,8 +4,8 @@ import main.Scanner;
 
 public class Declaration {
 
-	public String type;
-	public String identifier;
+	protected String type;
+	protected String identifier;
 
 	
 	public Declaration(String type, String identifier) {

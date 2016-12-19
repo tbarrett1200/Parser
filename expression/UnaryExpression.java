@@ -5,8 +5,8 @@ import operator.OperatorTable;
 
 public class UnaryExpression extends Expression {
 	
-	Expression exp;
-	String op;
+	private Expression exp;
+	private String op;
 	
 	public UnaryExpression(Expression exp, String op) {
 		this.exp = exp;

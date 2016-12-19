@@ -1,5 +1,4 @@
 package main;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -49,6 +48,12 @@ public class Scanner {
 	public boolean hasNext(String s) {
 		if (index == tokens.size()) return false;
 		return tokens.get(index).matches(s);
+		
+	}
+	
+	public boolean hasNext(String s, int peek) {
+		if (index+peek == tokens.size()) return false;
+		return tokens.get(index+peek).matches(s);
 		
 	}
 	

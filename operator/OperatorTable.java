@@ -7,13 +7,12 @@ import main.ParserUtils;
 
 public class OperatorTable {
 
-	
 	private static final PrecedenceLevel[] levels = { new PrecedenceLevel(Arity.UNARY, Associativity.NONE, Fixity.PREFIX, "+", "-", "++", "--"),
-										 new PrecedenceLevel(Arity.UNARY, Associativity.NONE, Fixity.POSTFIX, "--", "++"),
-										 new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "*", "/", "%" ),
-										 new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "+", "-"),
-										 new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "==", "!=", "<", "<=", ">", ">="),
-										 new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "=", "+=", "-=", "*=", "/=", "%=") };
+										 			  new PrecedenceLevel(Arity.UNARY, Associativity.NONE, Fixity.POSTFIX, "--", "++"),
+										 			  new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "*", "/", "%" ),
+										 			  new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "+", "-"),
+										 			  new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "==", "!=", "<", "<=", ">", ">="),
+										 			  new PrecedenceLevel(Arity.BINARY, Associativity.LEFT, Fixity.INFIX, "=", "+=", "-=", "*=", "/=", "%=") };
 	
 	public static final int MAX_PRECEDENCE = levels.length;
 	
